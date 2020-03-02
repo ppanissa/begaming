@@ -1,0 +1,25 @@
+definitions:
+  Profile:
+    type: object
+    properties:
+      id:
+        type: uuid
+      user_id:
+        type: uuid
+        $ref: '#/App/Models/User'
+      avatar_id:
+        type: uuid
+        $ref: '#/App/Models/File/File'
+      job_id:
+        type: id
+        $ref: '#/App/Models/Config/JobRole'
+      team_id:
+        type: id
+        $ref: '#/App/Models/Config/Team'
+      date_of_birth:
+        type: date
+        description: poderá enviar no formato dd/MM/yyyy
+    required:
+      - username
+      - email
+      - password

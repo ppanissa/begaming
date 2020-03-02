@@ -1,0 +1,23 @@
+/files:
+  post:
+    tags:
+      - File
+    description: File Upload
+    consumes:
+      - multipart/form-data
+    parameters:
+      - name: file
+        description: Upload de arquivo, para fazer multiplos uploads basta transformar em array file[]
+        in: formData
+        required: true
+        type: file
+    responses:
+      201:
+        $ref: '#/App/Modes/File/File'
+        example:
+          data: File[]
+      400:
+        description: Error
+        example:
+          error:
+            message: O arquivo enviado falhou....

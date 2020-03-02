@@ -1,0 +1,18 @@
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: uuid
+      name:
+        type: string
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - username
+      - email
+      - password

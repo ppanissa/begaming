@@ -1,0 +1,45 @@
+version: '3.6'
+services:
+  begaming-api:
+    build: .
+    container_name: begaming-api
+    volumes:
+      - .:/home/node/api
+    depends_on:
+      - begaming-postgres
+      - begaming-redis
+    links:
+      - begaming-postgres
+      - begaming-redis
+    networks:
+      - begaming-network
+    command: bash -c "./run init-project && adonis serve --dev"
+    ports:
+      - 22200:3333
+      - 22203:10000
+
+  begaming-postgres:
+    image: postgres
+    container_name: begaming-postgres
+    environment:
+      - POSTGRES_USER=begaming
+      - POSTGRES_PASSWORD=begaming
+      - POSTGRES_DB=begaming
+    ports:
+      - '22201:5432'
+    networks:
+      - begaming-network
+
+  begaming-redis:
+    image: bitnami/redis
+    container_name: begaming-redis
+    environment:
+      - REDIS_PASSWORD=begaming
+    ports:
+      - '22202:6379'
+    networks:
+      - begaming-network
+
+networks:
+  begaming-network:
+    driver: bridge

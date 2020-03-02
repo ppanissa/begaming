@@ -1,0 +1,212 @@
+/auth/register:
+  post:
+    tags:
+      - Auth
+    description: Register API
+    produces:
+      - application/json
+    parameters:
+      - name: username
+        description: Seu usuário
+        in: formData
+        required: true
+        type: string
+      - name: email
+        description: Seu email
+        in: formData
+        required: true
+        type: string
+      - name: password
+        description: Sua senha
+        in: formData
+        required: true
+        type: string
+      - name: password_confirmation
+        description: Confirmar sua senha
+        in: formData
+        required: true
+        type: string
+      - name: confirm_url
+        description: Url para retorno do token de confirmação no front-end
+        example: http://localhost:3000/confirmar-usuario
+        in: formData
+        required: true
+        type: string
+    responses:
+      201:
+        description: Usuário criado com sucesso
+        example:
+          data: Usuário criado com sucesso, confirme em seu e-mail, para liberarmos acesso.
+      401:
+        description: Error
+        example:
+          error:
+            message: Usuário já foi criado, aguardando liberação de acesso.
+      406:
+        description: Error
+        example:
+          error:
+            message: Usuário já cadastrado.
+
+/auth/register-confirm:
+  post:
+    tags:
+      - Auth
+    description: Renovar sua senha
+    produces:
+      - application/json
+    parameters:
+      - name: hash
+        description: Código Hash de Confirmação
+        in: formData
+        required: true
+        type: string
+      - name: confirm_url
+        description: Url para retorno do token de confirmação no front-end
+        example: http://localhost:3000/confirmar-usuario
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Retorno da confirmação da alteração
+        example:
+          data: Senha foi alterada com sucesso
+      401:
+        description: Excedeu o tempo
+        example:
+          error:
+            message: Tempo para renovar expirou, enviei outro e-mail de ativação ;)
+      404:
+        description: Error
+        example:
+          error:
+            message: Não foi possível localizar ;(
+
+/auth/login:
+  post:
+    tags:
+      - Auth
+    description: Login API
+    produces:
+      - application/json
+    parameters:
+      - name: login
+        description: Seu usuário ou email
+        in: formData
+        required: true
+        type: string
+      - name: password
+        description: Sua senha
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Retorno do token de autenticação
+        example:
+          data:
+            type: 'bearer'
+            token: '.....'
+            refreshToken: '.....'
+      401:
+        description: Error
+        example:
+          error:
+            message: Usuário aguardando liberação de acesso
+      404:
+        description: Error
+        example:
+          error:
+            message: Usuário não foi encontrado
+
+/auth/refresh-token:
+  post:
+    tags:
+      - Auth
+    description: Refresh Token API
+    produces:
+      - application/json
+    parameters:
+      - name: refresh_token
+        description: Token de Refresh
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Retorno do token de autenticação
+        example:
+          data:
+            type: 'bearer'
+            token: '.....'
+            refreshToken: '.....'
+      401:
+        description: Error
+        example:
+          error:
+            message: Não foi autorizado o refresh token.
+
+/auth/recovery-password:
+  post:
+    tags:
+      - Auth
+    description: Recuperar Senha API
+    produces:
+      - application/json
+    parameters:
+      - name: email
+        description: Email do usuário
+        in: formData
+        required: true
+        type: string
+      - name: confirm_url
+        description: Url para retorno do token de confirmação no front-end
+        example: http://localhost:3000/renovar-senha
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Retorno confirmação
+        example:
+          data: Foi enviado ao seu email, as informações para recuperação da senha
+      400:
+        description: Error
+        example:
+          error:
+            message: Este e-mail existe?
+
+/auth/renew-password:
+  post:
+    tags:
+      - Auth
+    description: Renovar sua senha
+    produces:
+      - application/json
+    parameters:
+      - name: hash
+        description: Código enviado para trocar senha
+        in: formData
+        required: true
+        type: string
+      - name: password
+        description: Sua senha
+        in: formData
+        required: true
+        type: string
+      - name: password_confirmation
+        description: Confirmar sua senha
+        in: formData
+        required: true
+        type: string
+    responses:
+      200:
+        description: Retorno da confirmação da alteração
+        example:
+          data: Senha foi alterada com sucesso
+      401:
+        description: Error
+        example:
+          error:
+            message: Não foi autorizado o refresh token.

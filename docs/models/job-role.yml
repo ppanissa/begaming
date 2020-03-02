@@ -1,0 +1,12 @@
+definitions:
+  JobRole:
+    type: object
+    properties:
+      id:
+        type: id
+      name:
+        type: string
+      description:
+        type: string
+    required:
+      - name

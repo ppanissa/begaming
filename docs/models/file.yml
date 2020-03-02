@@ -1,0 +1,24 @@
+definitions:
+  File:
+    type: object
+    properties:
+      id:
+        type: uuid
+      name:
+        type: string
+      real_name:
+        type: string
+      extname:
+        type: string
+      size:
+        type: string
+      type:
+        type: string
+      subtype:
+        type: string
+    required:
+      - name
+      - extname
+      - size
+      - type
+      - subtype

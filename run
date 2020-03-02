@@ -1,0 +1,41 @@
+#!/bin/bash
+
+function check_key_and_create() {
+  inputFile=.env
+  while read -r line; do
+    if [[ $line == 'APP_KEY=' ]]; then
+      bash -c "adonis key:generate"
+      # init '--key'
+    fi
+  done < "$inputFile"
+
+  bash -c "adonis migration:run"
+
+}
+
+
+function install() {
+  docker exec -it begaming-api "$@"
+}
+
+function_exists() {
+  declare -f -F $1 > /dev/null
+  return $?
+}
+
+printf ""
+
+case "$1" in
+  init-project) function_exists check_key_and_create && check_key_and_create
+    ;;
+  yarn) function_exists install && install $@
+    ;;
+  adonis)  function_exists install && install $@
+    ;;
+  npm)  function_exists install && install $@
+    ;;
+  *)  script/before.sh $@
+    ;;
+esac
+
+
